@@ -66,6 +66,9 @@ groups() ->
          proplist_empty_test,
          proplist_single_test,
          proplist_multi_test,
+         maps_empty_test,
+         maps_single_test,
+         maps_multi_test,
          json_empty_test,
          json_single_test,
          json_multi_test,
@@ -447,6 +450,23 @@ proplist_multi_test(_) ->
     Expect = [ [{<<"HelloField">>,<<"Hello">>},{<<"HiField">>,<<"Hi">>},{<<"ByeField">>,<<"Bye">>}] ],
     Expect = emysql_util:as_proplist(get_multi_test()),
     Expect = emysql:as_proplist(get_multi_test()),
+    ok.
+
+maps_empty_test(_) ->
+    [] = emysql_util:as_maps(get_empty_test()),
+    [] = emysql:as_maps(get_empty_test()),
+    ok.
+
+maps_single_test(_) ->
+    Expect = [#{'HelloField' => <<"Hello">>}],
+    Expect = emysql_util:as_maps(get_single_test()),
+    Expect = emysql:as_maps(get_single_test()),
+    ok.
+
+maps_multi_test(_) ->
+    Expect = [#{'ByeField' => <<"Bye">>, 'HelloField' => <<"Hello">>, 'HiField' => <<"Hi">>}],
+    Expect = emysql_util:as_maps(get_multi_test()),
+    Expect = emysql:as_maps(get_multi_test()),
     ok.
 
 json_empty_test(_) ->

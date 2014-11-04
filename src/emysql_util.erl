@@ -40,6 +40,7 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
+         as_maps/1,
          as_record/3,
          as_record/4
 ]).
@@ -52,6 +53,7 @@ result_type(R) -> emysql:result_type(R).
 as_dict(Res) -> emysql:as_dict(Res).
 as_json(Res) -> emysql:as_json(Res).
 as_proplist(Res) -> emysql:as_proplist(Res).
+as_maps(Res) -> emysql:as_maps(Res).
 as_record(Res, RecName, Fields) -> emysql:as_record(Res, RecName, Fields).
 as_record(Res, RecName, Fields, Fun) -> emysql:as_record(Res, RecName, Fields, Fun).
 

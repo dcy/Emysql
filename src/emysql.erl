@@ -119,6 +119,7 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
+         as_maps/1,
          as_record/3,
          as_record/4
 ]).
@@ -691,6 +692,10 @@ as_json(Res) -> emysql_conv:as_json(Res).
      Result :: #result_packet{},
      PropRow :: proplists:proplist().
 as_proplist(Res) -> emysql_conv:as_proplist(Res).
+
+%% @doc package row data as erlang maps 
+as_maps(Res) -> emysql_conv:as_maps(Res).
+
 
 %% @equiv as_record(Res, Recname, Fields, fun(A) -> A end)
 as_record(Res, Recname, Fields) -> emysql_conv:as_record(Res, Recname, Fields).

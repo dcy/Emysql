@@ -10,6 +10,7 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
+         as_maps/1,
          as_record/3,
          as_record/4
 ]).
@@ -78,3 +79,11 @@ json_val({datetime,{ {Year,Month,Day}, {Hour,Min,Sec} }}) ->
                       [Year, Month, Day, Hour, Min, Sec]));
 json_val(Value) ->
     Value.
+
+%% @see emysql:as_maps/1
+as_maps(#result_packet { rows = Rows } = Result) ->
+    Fields = emysql:field_names(Result),
+    [begin
+         maps:from_list([{binary_to_atom(K, utf8), V} || {K, V} <- lists:zip(Fields, Row)])
+     end || Row <- Rows].
+
