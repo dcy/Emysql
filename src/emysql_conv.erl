@@ -10,10 +10,13 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
-         as_maps/1,
          as_record/3,
          as_record/4
 ]).
+
+-ifdef(maps_available).
+-export([as_maps/1]).
+-endif.
 
 %% @see emysql:as_dict/1
 as_dict(Res = #result_packet{}) ->
@@ -80,10 +83,12 @@ json_val({datetime,{ {Year,Month,Day}, {Hour,Min,Sec} }}) ->
 json_val(Value) ->
     Value.
 
+-ifdef(maps_available).
 %% @see emysql:as_maps/1
 as_maps(#result_packet { rows = Rows } = Result) ->
     Fields = emysql:field_names(Result),
     [begin
          maps:from_list([{binary_to_atom(K, utf8), V} || {K, V} <- lists:zip(Fields, Row)])
      end || Row <- Rows].
+-endif.
 

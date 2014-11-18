@@ -696,8 +696,10 @@ as_json(Res) -> emysql_conv:as_json(Res).
      PropRow :: proplists:proplist().
 as_proplist(Res) -> emysql_conv:as_proplist(Res).
 
+-ifdef(maps_available).
 %% @doc package row data as erlang maps 
 as_maps(Res) -> emysql_conv:as_maps(Res).
+-endif.
 
 
 %% @equiv as_record(Res, Recname, Fields, fun(A) -> A end)

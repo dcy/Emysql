@@ -58,6 +58,7 @@ all() ->
      emit_warnings,
      {group, conversion}].
 
+-ifdef(maps_available).
 groups() ->
     [{conversion, [parallel],
         [dict_empty_test,
@@ -74,6 +75,22 @@ groups() ->
          json_multi_test,
          record_test]}
     ].
+-else.
+groups() ->
+    [{conversion, [parallel],
+        [dict_empty_test,
+         dict_single_test,
+         dict_multi_test,
+         proplist_empty_test,
+         proplist_single_test,
+         proplist_multi_test,
+         json_empty_test,
+         json_single_test,
+         json_multi_test,
+         record_test]}
+    ].
+-endif.
+
 
 
 %% Optional suite pre test initialization
@@ -453,37 +470,24 @@ proplist_multi_test(_) ->
     Expect = emysql:as_proplist(get_multi_test()),
     ok.
 
+-ifdef(maps_available).
 maps_empty_test(_) ->
-    case is_before_17() of
-        true ->
-            ok;
-        false ->
-            [] = emysql_util:as_maps(get_empty_test()),
-            [] = emysql:as_maps(get_empty_test()),
-            ok
-    end.
+    [] = emysql_util:as_maps(get_empty_test()),
+    [] = emysql:as_maps(get_empty_test()),
+    ok.
 
 maps_single_test(_) ->
-    case is_before_17() of
-        true ->
-            ok;
-        false ->
-            Expect = [#{'HelloField' => <<"Hello">>}],
-            Expect = emysql_util:as_maps(get_single_test()),
-            Expect = emysql:as_maps(get_single_test()),
-            ok
-    end.
+    Expect = [#{'HelloField' => <<"Hello">>}],
+    Expect = emysql_util:as_maps(get_single_test()),
+    Expect = emysql:as_maps(get_single_test()),
+    ok.
 
 maps_multi_test(_) ->
-    case is_before_17() of
-        true ->
-            ok;
-        false ->
-            Expect = [#{'ByeField' => <<"Bye">>, 'HelloField' => <<"Hello">>, 'HiField' => <<"Hi">>}],
-            Expect = emysql_util:as_maps(get_multi_test()),
-            Expect = emysql:as_maps(get_multi_test()),
-            ok
-    end.
+    Expect = [#{'ByeField' => <<"Bye">>, 'HelloField' => <<"Hello">>, 'HiField' => <<"Hi">>}],
+    Expect = emysql_util:as_maps(get_multi_test()),
+    Expect = emysql:as_maps(get_multi_test()),
+    ok.
+-endif.
 
 json_empty_test(_) ->
     [] = emysql_util:as_json(get_empty_test()),
@@ -517,13 +521,6 @@ record_test(_Config) ->
     Expected = emysql:as_record(Result, person, record_info(fields, person)),
     ok.
 
-is_before_17() ->
-    case erlang:system_info(otp_release) of
-        %% Rxx, before R16
-        [$R|_] -> true;
-        %% "17", our future with map
-        _ -> false
-    end.
 
 
 %%% Data generation

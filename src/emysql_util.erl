@@ -40,10 +40,13 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
-         as_maps/1,
          as_record/3,
          as_record/4
 ]).
+
+-ifdef(maps_available).
+-export([as_maps/1]).
+-endif.
 
 affected_rows(P) -> emysql:affected_rows(P).
 field_names(R) -> emysql:field_names(R).
@@ -53,7 +56,11 @@ result_type(R) -> emysql:result_type(R).
 as_dict(Res) -> emysql:as_dict(Res).
 as_json(Res) -> emysql:as_json(Res).
 as_proplist(Res) -> emysql:as_proplist(Res).
+
+-ifdef(maps_available).
 as_maps(Res) -> emysql:as_maps(Res).
+-endif.
+
 as_record(Res, RecName, Fields) -> emysql:as_record(Res, RecName, Fields).
 as_record(Res, RecName, Fields, Fun) -> emysql:as_record(Res, RecName, Fields, Fun).
 
