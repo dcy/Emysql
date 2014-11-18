@@ -119,10 +119,13 @@
          as_dict/1,
          as_json/1,
          as_proplist/1,
-         as_maps/1,
          as_record/3,
          as_record/4
 ]).
+
+-ifdef(maps_available).
+-export([as_maps/1]).
+-endif.
 
 %% Result Data API - Handle results from Mysql
 -export([

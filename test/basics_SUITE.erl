@@ -75,6 +75,7 @@ groups() ->
          record_test]}
     ].
 
+
 %% Optional suite pre test initialization
 %%--------------------------------------------------------------------
 %% Function: init_per_suite(Config0) ->
@@ -453,21 +454,36 @@ proplist_multi_test(_) ->
     ok.
 
 maps_empty_test(_) ->
-    [] = emysql_util:as_maps(get_empty_test()),
-    [] = emysql:as_maps(get_empty_test()),
-    ok.
+    case is_before_17() of
+        true ->
+            ok;
+        false ->
+            [] = emysql_util:as_maps(get_empty_test()),
+            [] = emysql:as_maps(get_empty_test()),
+            ok
+    end.
 
 maps_single_test(_) ->
-    Expect = [#{'HelloField' => <<"Hello">>}],
-    Expect = emysql_util:as_maps(get_single_test()),
-    Expect = emysql:as_maps(get_single_test()),
-    ok.
+    case is_before_17() of
+        true ->
+            ok;
+        false ->
+            Expect = [#{'HelloField' => <<"Hello">>}],
+            Expect = emysql_util:as_maps(get_single_test()),
+            Expect = emysql:as_maps(get_single_test()),
+            ok
+    end.
 
 maps_multi_test(_) ->
-    Expect = [#{'ByeField' => <<"Bye">>, 'HelloField' => <<"Hello">>, 'HiField' => <<"Hi">>}],
-    Expect = emysql_util:as_maps(get_multi_test()),
-    Expect = emysql:as_maps(get_multi_test()),
-    ok.
+    case is_before_17() of
+        true ->
+            ok;
+        false ->
+            Expect = [#{'ByeField' => <<"Bye">>, 'HelloField' => <<"Hello">>, 'HiField' => <<"Hi">>}],
+            Expect = emysql_util:as_maps(get_multi_test()),
+            Expect = emysql:as_maps(get_multi_test()),
+            ok
+    end.
 
 json_empty_test(_) ->
     [] = emysql_util:as_json(get_empty_test()),
@@ -500,6 +516,14 @@ record_test(_Config) ->
     Expected = emysql_util:as_record(Result, person, record_info(fields, person)),
     Expected = emysql:as_record(Result, person, record_info(fields, person)),
     ok.
+
+is_before_17() ->
+    case erlang:system_info(otp_release) of
+        %% Rxx, before R16
+        [$R|_] -> true;
+        %% "17", our future with map
+        _ -> false
+    end.
 
 
 %%% Data generation
