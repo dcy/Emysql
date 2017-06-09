@@ -88,7 +88,8 @@ json_val(Value) ->
 as_maps(#result_packet { rows = Rows } = Result) ->
     Fields = emysql:field_names(Result),
     [begin
-         maps:from_list([{binary_to_atom(K, utf8), V} || {K, V} <- lists:zip(Fields, Row)])
+         maps:from_list([{binary_to_atom(K, utf8), V} ||
+                         {K, V} <- lists:zip(Fields, Row)])
      end || Row <- Rows].
 -endif.
 

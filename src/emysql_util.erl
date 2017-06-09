@@ -61,6 +61,7 @@ as_proplist(Res) -> emysql:as_proplist(Res).
 as_maps(Res) -> emysql:as_maps(Res).
 -endif.
 
-as_record(Res, RecName, Fields) -> emysql:as_record(Res, RecName, Fields).
-as_record(Res, RecName, Fields, Fun) -> emysql:as_record(Res, RecName, Fields, Fun).
-
+as_record(Res, RecName, Fields) ->
+    emysql:as_record(Res, RecName, Fields).
+as_record(Res, RecName, Fields, Fun) ->
+    emysql:as_record(Res, RecName, Fields, Fun).

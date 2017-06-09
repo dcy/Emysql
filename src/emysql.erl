@@ -129,9 +129,9 @@
 
 %% Result Data API - Handle results from Mysql
 -export([
-	affected_rows/1,
-	result_type/1,
-        field_names/1,
+         affected_rows/1,
+         result_type/1,
+         field_names/1,
          insert_id/1
 ]).
 
